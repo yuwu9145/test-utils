@@ -12,6 +12,17 @@ interface MountingOptions<Props> {
     [key: string]: Slot
   },
   stubs?: Record<string, any>
+  shallow?: boolean
+}
+
+export function shallowMount<P> (
+    component: any,
+    options?: MountingOptions<P>
+): VueWrapper {
+    return mount(component, {
+        ...options,
+        ...{ shallow: true }
+    })
 }
 
 export function mount<P>(
