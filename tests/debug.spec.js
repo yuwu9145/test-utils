@@ -1,11 +1,13 @@
-import { defineComponent, h } from 'vue'
-import { shallowMount } from '../src'
+import { defineComponent } from 'vue'
+import { shallowMount, newH } from '../src'
+
+const h = newH
 
 const Hello = defineComponent({
   render() {
-    return h('h1', 'Hello world!')
+    return h('h1', {}, 'Hello world!')
   },
-  name: 'Hello'
+  name: 'HelloWorld'
 })
 
 test.only('Jess testing shallow mount', () => {

@@ -1,4 +1,5 @@
-import { h, createApp, VNode, defineComponent, getCurrentInstance } from 'vue'
+import { createApp, VNode, defineComponent, getCurrentInstance } from 'vue'
+import { newH } from './h'
 
 import { VueWrapper, createWrapper } from './vue-wrapper'
 import { createEmitMixin } from './emitMixin';
@@ -44,7 +45,7 @@ export function mount<P>(
 
   const Parent = (props?: P) => defineComponent({
     render() {
-      return h(component, props, slots)
+      return newH(component, props, slots, { HelloWorld: { render() { return newH('hello-stub') } } })
     }
   })
 
