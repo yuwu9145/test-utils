@@ -11,6 +11,7 @@ interface MountingOptions<Props> {
     default?: Slot
     [key: string]: Slot
   },
+  shallow?: boolean
   stubs?: Record<string, any>
 }
 
@@ -36,6 +37,10 @@ export function mount<P>(
       return h(component, props, slots)
     }
   })
+
+  if (options?.shallow) {
+    // Do the shallow mounty goodness here??
+  }
 
   const vm = createApp(Parent(options && options.props))
   const { emitMixin, events } = createEmitMixin()
