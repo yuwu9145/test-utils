@@ -1,5 +1,6 @@
-import { createApp, VNode, defineComponent, getCurrentInstance } from 'vue'
-import { newH } from './h'
+import { createApp, VNode } from '../../vue-next/packages/runtime-dom'
+import { defineComponent, h, transformHArgs, getCurrentInstance } from '../../vue-next/packages/runtime-core'
+import stubsStorage from './stubsStorage'
 
 import { VueWrapper, createWrapper } from './vue-wrapper'
 import { createEmitMixin } from './emitMixin';
@@ -26,9 +27,19 @@ export function shallowMount<P> (
     })
 }
 
+function handleStubs(hArgs, instance) {
+  if (stubsStorage.has(instance?.type)) {
+    const stubConfig = stubsStorage.get(instance.type)
+    if (stubConfig.shallow) {
+      
+    }
+  }
+  return hArgs
+}
+
+transformHArgs(handleStubs)
 export function mount<P>(
   component: any,
-  // component: new () => ComponentPublicInstance<P>,
   options?: MountingOptions<P>
 ): VueWrapper {
 
@@ -45,13 +56,20 @@ export function mount<P>(
 
   const Parent = (props?: P) => defineComponent({
     render() {
-      return newH(component, props, slots, { HelloWorld: { render() { return newH('hello-stub') } } })
+      return h(component, props, slots)
     }
   })
 
-  const vm = createApp(Parent(options && options.props))
+  const instanceType = Parent(options && options.props)
+  const vm = createApp(instanceType)
+
+  if (options.stubs || options.shallow) {
+    stubsStorage.set(instanceType, { stubs: options.stubs, shallow: options.shallow })
+  }
+
   const { emitMixin, events } = createEmitMixin()
   vm.mixin(emitMixin)
+
   const app = vm.mount('#app')
 
   return createWrapper(app, events)

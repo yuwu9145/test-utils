@@ -1,4 +1,4 @@
-import { getCurrentInstance } from 'vue'
+import { getCurrentInstance } from '../../vue-next/packages/runtime-core'
 
 export const createEmitMixin = () => {
   const events: Record<string, unknown[]> = {}
