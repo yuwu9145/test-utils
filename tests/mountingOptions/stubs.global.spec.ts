@@ -382,5 +382,36 @@ describe('mounting options: stubs', () => {
           '</component-with-slots-stub>'
       )
     })
+
+    it('renders scoped slot', () => {
+      function stubWithSlots(name, slotParams) {
+        return {
+          name,
+          setup: (props, { slots }) => {
+            const filterSlots = Object.entries(slots).filter(
+              ([name]) => name in slotParams && name !== '_'
+            )
+            const slotObject = filterSlots.map(([slotName, slotFunc]) =>
+              // @ts-ignore
+              slotFunc(slotParams[slotName])
+            )
+            return () => h(`${name}-stub`, props, slotObject)
+          }
+        }
+      }
+
+      const wrapper = mount(Component, {
+        global: {
+          stubs: {
+            ComponentWithSlots: stubWithSlots('Foo', {
+              scoped: { boolean: true, string: 'Dobromir' }
+            })
+          }
+        }
+      })
+      expect(wrapper.html()).toEqual(
+        '<div><foo-stub>true Dobromir</foo-stub></div>'
+      )
+    })
   })
 })
