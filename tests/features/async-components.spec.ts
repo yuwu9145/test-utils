@@ -1,5 +1,6 @@
-import { defineAsyncComponent, defineComponent, h, AppConfig } from 'vue'
-import { mount, flushPromises } from '../../src'
+import { defineAsyncComponent, defineComponent, h, AppConfig, nextTick } from 'vue'
+import { mount, flushPromises, VueWrapper } from '../../src'
+import Icon from '../components/Icon.vue'
 
 const config: Partial<AppConfig> = {
   errorHandler: (error: unknown) => {
@@ -102,5 +103,35 @@ describe('defineAsyncComponent', () => {
     const wrapper = mount(Comp, { global: { config } })
     await flushPromises()
     expect(wrapper.html()).toContain('Hello world')
+  })
+})
+
+describe.only('dynamic async component', () => {
+  describe("Icons", () => {
+    // @ts-ignore
+    global.SVGElement = Element;
+    let wrapper: VueWrapper<any>
+
+    describe("test async", () => {
+      beforeEach(() => {
+        document.body.innerHTML = `<div id="target"></div>`
+
+        wrapper = mount(Icon, {
+          props: {
+            element: 'Circle',
+          },
+          attachTo: document.getElementById("target")
+        } as any)
+      })
+
+      it("icon exists", async () => {
+        console.log(wrapper.findComponent(Icon));
+        await nextTick()
+        let icon = wrapper.find("svg");
+        console.log(wrapper.html())
+
+        expect(icon.exists()).toBeTruthy()
+      })
+    })
   })
 })
