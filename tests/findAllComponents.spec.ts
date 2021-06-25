@@ -1,6 +1,6 @@
 import { mount } from '../src'
 import Hello from './components/Hello.vue'
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 
 const compC = defineComponent({
   name: 'ComponentC',
@@ -24,5 +24,29 @@ describe('findAllComponents', () => {
       'Hello world'
     )
     expect(wrapper.findAllComponents(Hello)[0].text()).toBe('Hello world')
+  })
+
+  it('https://github.com/vuejs/vue-test-utils-next/issues/689', () => {
+    const Comp1 = defineComponent({
+      setup(props, { slots }) {
+        return () => h('div', slots?.default!())
+      }
+    })
+    const Comp2 = defineComponent({
+      setup() {
+        return () => h('span')
+      }
+    })
+    const Comp = defineComponent({
+      components: { Comp1, Comp2 },
+      setup() {
+        const arr = ['foo']
+        return () => arr.map(val => h(Comp1, () => [h(Comp2, { 'data-some-attr': 'val' })]))
+      }
+    })
+
+    const wrapper = mount(Comp);
+    const components = wrapper.findAllComponents('[data-some-attr="val"]');
+    expect(components.length).toBe(1);
   })
 })
