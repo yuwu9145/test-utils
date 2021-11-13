@@ -5305,6 +5305,11 @@ pretty@^2.0.0:
     extend-shallow "^2.0.1"
     js-beautify "^1.6.12"
 
+primevue@^3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/primevue/-/primevue-3.8.2.tgz#c9c11ef912714e516c5ede19a8256d60848ccf01"
+  integrity sha512-ToJYJad5wvrSydBjyIFHuDZzehor90XVioTzNHGyMqBat23XMwHqQSHsCmbOS91CCxTP9UjaAS8S6m4HjBGceQ==
+
 prismjs@^1.23.0:
   version "1.25.0"
   resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.25.0.tgz#6f822df1bdad965734b310b315a23315cf999756"

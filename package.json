@@ -35,6 +35,7 @@
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
     "pretty": "^2.0.0",
+    "primevue": "^3.8.2",
     "reflect-metadata": "^0.1.13",
     "rollup": "^2.59.0",
     "rollup-plugin-typescript2": "^0.30.0",
